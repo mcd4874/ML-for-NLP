@@ -21,6 +21,11 @@ def train():
     # Read data from file into a data frame
     data = read_data(args.train)
 
+    # For the 'issue' feature, discard data with an issue of 'NONE'
+    if args.feature == Feature.issue:
+        is_none = data["issue"] != "NONE"
+        data = data[is_none]
+
     # Prepare training data
     x_train = vect_transform(data)
     y_train = data[args.feature.value]

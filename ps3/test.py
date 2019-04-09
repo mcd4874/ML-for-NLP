@@ -19,6 +19,11 @@ def test():
     # Read data from file into a data frame
     data = read_data(args.test)
 
+    # For the 'issue' feature, discard data with an issue of 'NONE'
+    if args.feature == Feature.issue:
+        is_none = data["issue"] != "NONE"
+        data = data[is_none]
+
     # Classify sentences
     x_test = vect_transform(data)
     y_test = data[args.feature.value]
