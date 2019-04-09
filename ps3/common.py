@@ -1,44 +1,74 @@
 import os
+import re
 import pickle
-import string
+import enum
 import pandas as pd
-from nltk.corpus import stopwords
-
-PUNCT_TABLE = dict((ord(char), None) for char in string.punctuation.join(['“', '”', '’']))
-STOPLIST = stopwords.words('english')
+from sklearn.feature_extraction.text import CountVectorizer
 
 
-def clean_sentence(text):
-    # Lowercase text
-    text = text.lower()
+class Feature(enum.Enum):
+    genre = 'genre'
+    polarity = 'polarity'
+    issue = 'issue'
 
-    # Strip punctuation
-    text = text.translate(PUNCT_TABLE)
+    def __str__(self):
+        return self.value
 
-    # Filter out English stop words
-    text = " ".join([word for word in text.split() if word not in STOPLIST])
+
+def clean_text(text):
+    """
+    Applies some pre-processing on the given text.
+
+    Steps :
+    - Removing HTML tags
+    - Removing punctuation
+    - Lowering text
+    """
+
+    # Remove HTML tags
+    text = re.sub(r'<.*?>', '', text)
+
+    # Remove the characters [\], ['] and ["]
+    text = re.sub(r"\\", "", text)
+    text = re.sub(r"\'", "", text)
+    text = re.sub(r"\"", "", text)
+
+    # Convert text to lowercase
+    text = text.strip().lower()
+
+    # Replace punctuation characters with spaces
+    filters = '!"\'#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
+    translate_dict = dict((c, " ") for c in filters)
+    translate_map = str.maketrans(translate_dict)
+    text = text.translate(translate_map)
 
     return text
 
 
 def read_data(file):
     # Read in training data
-    data = pd.read_csv(os.path.abspath(file), delimiter="\t",
+    data = pd.read_csv(os.path.abspath(file), delimiter=r"\t|\s{3,}",
                        names=["index", "sentence", "polarity", "issue", "genre", "uname"])
 
     # Discard unnecessary columns
     data = data[["sentence", "polarity", "issue", "genre"]]
 
-    # Clean sentences
-    data["sentence"] = data["sentence"].apply(clean_sentence)
-
     return data
+
+
+def vect_transform(data):
+    cv = CountVectorizer(
+        stop_words="english",
+        preprocessor=clean_text
+    ).fit(data["sentence"])
+
+    return cv.transform(data['sentence'])
 
 
 def save_model(model, file):
     with open(os.path.abspath(file), "wb") as model_out:
         pickle.dump(model, model_out)
-        print(f"==> Model saved to: {file}")
+        print(f"Model saved to: {file}")
 
 
 def load_model(file):
