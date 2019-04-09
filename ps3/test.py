@@ -1,4 +1,5 @@
 import argparse
+import pandas as pd
 from sklearn.metrics import classification_report
 from ps3.common import Feature, read_data, vect_transform, load_model
 
@@ -11,6 +12,8 @@ def test():
                         help="the path to the test corpra")
     parser.add_argument("model", metavar="MODEL_FILE", type=str,
                         help="the path to the model to load")
+    parser.add_argument("--report", "-r", action="store_true",
+                        help="Print a classification report")
     args = parser.parse_args()
 
     # Load the model
@@ -29,5 +32,15 @@ def test():
     y_test = data[args.feature.value]
     predict = model.predict(x_test)
 
-    # Print report
-    print(classification_report(y_test, predict))
+    # Prepare output
+    output = data
+    output[args.feature.value] = predict
+
+    # Print each row in the (normalized) input format
+    for _, r in output.iterrows():
+        print(r['id'], r['sentence'], r['polarity'], r['issue'], r['genre'], sep="\t")
+
+    if args.report:
+        # Print report
+        print()
+        print(classification_report(y_test, predict))

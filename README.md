@@ -40,6 +40,7 @@ positional arguments:
 
 optional arguments:
   -h, --help     show this help message and exit
+  --report, -r   Print a classification report
 ```
 
 ## Example
@@ -49,12 +50,6 @@ $ ~/anaconda3/bin/python train.py genre PS3_training_data.txt genre_model.bin
 Model saved to: genre_model.bin
 
 $ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.bin
-              precision    recall  f1-score   support
-
-     GENRE_A       0.99      0.99      0.99      1280
-     GENRE_B       0.99      0.99      0.99      1284
-
-   micro avg       0.99      0.99      0.99      2564
-   macro avg       0.99      0.99      0.99      2564
-weighted avg       0.99      0.99      0.99      2564
+0	This is definitely a must have if your state does not allow cell phone usage while driving.	POSITIVE	NONE	GENRE_B
+[...]
 ```
