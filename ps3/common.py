@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+
 class Feature(enum.Enum):
     genre = 'genre'
     polarity = 'polarity'
@@ -50,15 +51,9 @@ def read_data(file):
     data = pd.read_csv(os.path.abspath(file), delimiter=r"\t|\s{3,}",
                        names=["id", "sentence", "polarity", "issue", "genre"])
 
-    # Discard unnecessary columns
-    # data = data[["sentence", "polarity", "issue", "genre"]]
     data["issue"] = data["issue"].str.strip()
 
-
-
-
     return data
-
 
 
 def vect_transform(data):
@@ -69,8 +64,9 @@ def vect_transform(data):
 
     return cv.transform(data['sentence'])
 
+
 def vect_transform_tf(data):
-    cv = TfidfVectorizer(stop_words="english",preprocessor=clean_text,ngram_range=(1, 2)).fit(data["sentence"])
+    cv = TfidfVectorizer(stop_words="english", preprocessor=clean_text, ngram_range=(1, 2)).fit(data["sentence"])
 
     return cv.transform(data['sentence'])
 
