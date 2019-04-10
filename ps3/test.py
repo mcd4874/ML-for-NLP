@@ -1,6 +1,7 @@
 import argparse
 from sklearn.metrics import classification_report
-from ps3.common import Feature, read_data, vect_transform, load_model
+from ps3.common import Feature, read_data, vect_transform, load_model,vect_transform_tf
+from sklearn.metrics import accuracy_score
 
 
 def test():
@@ -20,14 +21,21 @@ def test():
     data = read_data(args.test)
 
     # For the 'issue' feature, discard data with an issue of 'NONE'
-    if args.feature == Feature.issue:
-        is_none = data["issue"] != "NONE"
-        data = data[is_none]
+    # if args.feature == Feature.issue:
+    #     is_none = data["issue"] != "NONE"
+    #     data = data[is_none]
 
     # Classify sentences
-    x_test = vect_transform(data)
+    if (args.feature.value == 'genre'):
+        x_test = vect_transform_tf(data)
+    else:
+        x_test = vect_transform(data)
     y_test = data[args.feature.value]
     predict = model.predict(x_test)
 
     # Print report
     print(classification_report(y_test, predict))
+
+    #print final accuracy
+    print("The accuracy score is : ")
+    print(accuracy_score(y_test, predict))

@@ -4,7 +4,7 @@ import pickle
 import enum
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
-
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 class Feature(enum.Enum):
     genre = 'genre'
@@ -52,7 +52,7 @@ def read_data(file):
 
     # Discard unnecessary columns
     data = data[["sentence", "polarity", "issue", "genre"]]
-
+    data["issue"] = data["issue"].str.strip()
     return data
 
 
@@ -61,6 +61,11 @@ def vect_transform(data):
         stop_words="english",
         preprocessor=clean_text
     ).fit(data["sentence"])
+
+    return cv.transform(data['sentence'])
+
+def vect_transform_tf(data):
+    cv = TfidfVectorizer(stop_words="english",preprocessor=clean_text,ngram_range=(1, 2)).fit(data["sentence"])
 
     return cv.transform(data['sentence'])
 
