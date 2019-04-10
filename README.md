@@ -53,3 +53,6 @@ $ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.bin
 0	This is definitely a must have if your state does not allow cell phone usage while driving.	POSITIVE	NONE	GENRE_B
 [...]
 ```
+
+$ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.pkl
+use pretrain pickle model in case not want to retrain it. 
