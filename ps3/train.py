@@ -1,7 +1,7 @@
 import argparse
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
-from ps3.common import Feature, read_data, vect_transform, save_model, vect_transform_tf
+from ps3.common import Feature, read_data, vect_transform, save_model, vect_transform_tf,transform
 from imblearn.over_sampling import RandomOverSampler
 
 feature_models = {
@@ -19,6 +19,8 @@ def train():
                         help="the path to the training corpra")
     parser.add_argument("out", metavar="OUTPUT_FILE", type=str,
                         help="where to save the trained model")
+    parser.add_argument("text_model_out", metavar="TEXT_MODEL_FILE", type=str,
+                        help="where to save the trained text model")
     args = parser.parse_args()
 
     # Read data from file into a data frame
@@ -31,11 +33,15 @@ def train():
 
     # Prepare training data
     if args.feature.value == "genre":
-        x_train = vect_transform_tf(data)
+        cv_model = vect_transform_tf(data)
 
     else:
-        x_train = vect_transform(data)
+        cv_model = vect_transform(data)
 
+    # save context model
+    save_model(cv_model,args.text_model_out)
+
+    x_train = transform(data,cv_model)
     y_train = data[args.feature.value]
 
     if args.feature.value == "polarity":

@@ -29,6 +29,7 @@ positional arguments:
   FEATURE        the feature for which to train
   TRAINING_DATA  the path to the training corpra
   OUTPUT_FILE    where to save the trained model
+  TEXT_MODEL_FILE where to save the trained text model
 
 optional arguments:
   -h, --help     show this help message and exit
@@ -44,6 +45,9 @@ positional arguments:
   FEATURE        the feature to identify
   TRAINING_DATA  the path to the test corpra
   MODEL_FILE     the path to the model to load
+  TEXT_MODEL_FILE  where to load the trained text mode
+  report_file  generate report file
+  --report  Print a classification report
 
 optional arguments:
   -h, --help     show this help message and exit
@@ -54,7 +58,7 @@ optional arguments:
 
 ```
 $ ~/anaconda3/bin/python train.py genre PS3_training_data.txt genre_model.pkl
-Model saved to: genre_model.bin
+Model saved to: genre_model.pkl
 
 $ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.pkl
 0	This is definitely a must have if your state does not allow cell phone usage while driving.	POSITIVE	NONE	GENRE_B
@@ -62,3 +66,14 @@ $ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.pkl
 ```
 
 We have included pre-trained models for each feature in the submission archive.
+
+Use this 3 available command to test three case right away without re-trained.
+
+For task 1
+$ ~/anaconda3/bin/python test.py genre PS3_test_data_indexed.txt genre_model.pkl genre_cv_model.pkl genre_report.csv --r
+
+For task 2
+$ ~/anaconda3/bin/python test.py polarity PS3_test_data_indexed.txt polarity_model.pkl polarity_cv_model.pkl polarity_report.csv --r
+
+For task 3
+$ ~/anaconda3/bin/python test.py issue PS3_test_data_indexed.txt issue_model.pkl issue_cv_model.pkl issue_report.csv --r

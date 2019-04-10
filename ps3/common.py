@@ -62,14 +62,15 @@ def vect_transform(data):
         preprocessor=clean_text
     ).fit(data["sentence"])
 
-    return cv.transform(data['sentence'])
+    return cv
 
 
 def vect_transform_tf(data):
     cv = TfidfVectorizer(stop_words="english", preprocessor=clean_text, ngram_range=(1, 2)).fit(data["sentence"])
+    return cv
 
-    return cv.transform(data['sentence'])
-
+def transform(data,model):
+    return model.transform(data['sentence'])
 
 def save_model(model, file):
     with open(os.path.abspath(file), "wb") as model_out:
