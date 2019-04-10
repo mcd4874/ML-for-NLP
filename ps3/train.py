@@ -26,9 +26,9 @@ def train():
     data = read_data(args.train)
 
     # For the 'issue' feature, discard data with an issue of 'NONE'
-    # if args.feature == Feature.issue:
-    #     is_none = data["issue"] != "NONE"
-    #     data = data[is_none]
+    if args.feature == Feature.issue:
+        is_none = data["issue"] != "NONE"
+        data = data[is_none]
 
     # Prepare training data
     print(args.feature.value)

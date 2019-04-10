@@ -48,12 +48,17 @@ def clean_text(text):
 def read_data(file):
     # Read in training data
     data = pd.read_csv(os.path.abspath(file), delimiter=r"\t|\s{3,}",
-                       names=["index", "sentence", "polarity", "issue", "genre", "uname"])
+                       names=["id", "sentence", "polarity", "issue", "genre"])
 
     # Discard unnecessary columns
-    data = data[["sentence", "polarity", "issue", "genre"]]
+    # data = data[["sentence", "polarity", "issue", "genre"]]
     data["issue"] = data["issue"].str.strip()
+
+
+
+
     return data
+
 
 
 def vect_transform(data):
