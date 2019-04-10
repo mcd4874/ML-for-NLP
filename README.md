@@ -6,6 +6,13 @@
 - Christian Franco (caf1751)
 - Steven Mirabito (stm4445)
 
+## Installation
+
+Assuming Anaconda is installed in `~/anaconda3`:
+```
+~/anaconda3/bin/pip install -r requirements.txt
+```
+
 ## Usage
 
 Tested with Anaconda Python 3.7.1.
@@ -46,13 +53,12 @@ optional arguments:
 ## Example
 
 ```
-$ ~/anaconda3/bin/python train.py genre PS3_training_data.txt genre_model.bin
+$ ~/anaconda3/bin/python train.py genre PS3_training_data.txt genre_model.pkl
 Model saved to: genre_model.bin
 
-$ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.bin
+$ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.pkl
 0	This is definitely a must have if your state does not allow cell phone usage while driving.	POSITIVE	NONE	GENRE_B
 [...]
 ```
 
-$ ~/anaconda3/bin/python test.py genre PS3_training_data.txt genre_model.pkl
-use pretrain pickle model in case not want to retrain it. 
+We have included pre-trained models for each feature in the submission archive.
